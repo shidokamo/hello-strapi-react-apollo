@@ -1,6 +1,7 @@
 {
   "name": "hello-strapi-react-apollo",
   "version": "1.0.0",
+  "main": "./src/index.js",
   "scripts": {
     "start": "webpack-dev-server --progress --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
@@ -15,7 +16,7 @@
     "apollo-client-preset": "^1.0.8",
     "apollo-link": "^1.2.13",
     "apollo-link-context": "^1.0.19",
-    "apollo-link-rest": "^0.7.3",
+    "apollo-link-rest": "^0.7.3"
   },
   "devDependencies": {
     "autoprefixer": "9.7.3",
@@ -42,9 +43,6 @@
     "postcss-loader": "3.0.0",
     "promise": "8.0.3",
     "raf": "3.4.1",
-    "react": "^16.12.0",
-    "react-dev-utils": "^10.0.0",
-    "react-dom": "^16.12.0",
     "style-loader": "1.1.2",
     "sw-precache-webpack-plugin": "0.11.5",
     "url-loader": "3.0.0",
@@ -54,7 +52,15 @@
     "webpack-manifest-plugin": "2.2.0",
     "webpack-merge": "^4.2.2",
     "node-sass": "^4.13.0",
-    "sass-loader": "^8.0.0"
+    "sass-loader": "^8.0.0",
     "whatwg-fetch": "3.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shidokamo/hello-strapi-react-apollo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shidokamo/hello-strapi-react-apollo/issues"
+  },
+  "homepage": "https://github.com/shidokamo/hello-bulma#readme"
 }
