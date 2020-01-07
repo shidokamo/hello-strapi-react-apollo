@@ -27,9 +27,9 @@
   "devDependencies": {
     "@babel/cli": "^7.7.0",
     "@babel/core": "^7.7.2",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/preset-env": "^7.7.1",
     "@babel/preset-react": "^7.7.0",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
     "autoprefixer": "9.7.3",
     "babel-eslint": "10.0.3",
     "babel-jest": "24.9.0",
@@ -53,6 +53,7 @@
     "react-hot-loader": "^4.12.18",
     "sass-loader": "^8.0.0",
     "style-loader": "1.1.2",
+    "svg-inline-loader": "^0.8.0",
     "sw-precache-webpack-plugin": "0.11.5",
     "url-loader": "3.0.0",
     "webpack": "4.41.5",
