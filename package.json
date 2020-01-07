@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
     "apollo-boost": "^0.4.7",
     "apollo-client-preset": "^1.0.8",
     "apollo-link": "^1.2.13",
