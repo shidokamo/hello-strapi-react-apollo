@@ -1,5 +1,9 @@
-import { ApolloClient, HttpLink, ApolloLink } from "@apollo/client";
-import { InMemoryCache } from "apollo-cache-inmemory";
+import {
+  ApolloClient,
+  HttpLink,
+  ApolloLink,
+  InMemoryCache
+} from "@apollo/client";
 
 import auth from "./utils/auth";
 
