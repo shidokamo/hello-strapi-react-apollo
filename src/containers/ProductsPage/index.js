@@ -4,28 +4,28 @@
  *
  */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link }  from 'react-router-dom';
-import { Query } from 'react-apollo';
-import { GET_PRODUCTS } from '../../queries';
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { Query } from "@apollo/react-components";
+import { GET_PRODUCTS } from "../../queries";
 
-import Table from '../../components/Table';
+import Table from "../../components/Table";
 // Utils
 
-import './styles.scss';
+import "./styles.scss";
 
 class ProductsPage extends React.Component {
   state = { products: [] };
 
-  onClick = (id) => {
+  onClick = id => {
     this.props.history.push(`/product/${id}`);
-  }
+  };
 
   render() {
     return (
       <Query query={GET_PRODUCTS}>
-        {({ loading, error, data}) => {
+        {({ loading, error, data }) => {
           if (loading) {
             return null;
           }
@@ -48,7 +48,7 @@ class ProductsPage extends React.Component {
                 <div className="row">
                   <Table
                     data={data.products}
-                    headers={['_id', 'name', 'description', '']}
+                    headers={["_id", "name", "description", ""]}
                     onClick={this.onClick}
                   />
                 </div>
@@ -64,7 +64,7 @@ class ProductsPage extends React.Component {
 ProductsPage.defaultProps = {};
 
 ProductsPage.propTypes = {
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default ProductsPage;
