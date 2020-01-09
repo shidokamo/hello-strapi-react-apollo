@@ -40,16 +40,16 @@ class AuthPage extends React.Component {
 
     switch (this.props.match.params.authType) {
       case 'login':
-        requestURL = 'http://localhost:1337/auth/local';
+        requestURL = `${process.env.STRAPI_URL}/auth/local`;
         break;
       case 'register':
-        requestURL = 'http://localhost:1337/auth/local/register';
+        requestURL = `${process.env.STRAPI_URL}/auth/local/register`;
         break;
       case 'reset-password':
-        requestURL = 'http://localhost:1337/auth/reset-password';
+        requestURL = `${process.env.STRAPI_URL}/auth/reset-password`;
         break;
       case 'forgot-password':
-        requestURL = 'http://localhost:1337/auth/forgot-password';
+        requestURL = `${process.env.STRAPI_URL}/auth/forgot-password`;
         break;
       default:
     }
