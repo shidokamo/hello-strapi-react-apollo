@@ -4,23 +4,23 @@
  *
  */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { findIndex, get, map, replace, set } from 'lodash';
-import { Link } from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import { findIndex, get, map, replace, set } from "lodash";
+import { Link } from "react-router-dom";
 
-import Button from '../../components/Button';
-import FormDivider from '../../components/FormDivider';
-import Input from '../../components/InputsIndex';
-import Logo from '../../assets/logo_strapi.png';
-import SocialLink from '../../components/SocialLink';
+import Button from "../../components/Button";
+import FormDivider from "../../components/FormDivider";
+import Input from "../../components/InputsIndex";
+import Logo from "../../assets/logo_strapi.png";
+import SocialLink from "../../components/SocialLink";
 
 // Utils
-import auth from '../../utils/auth';
-import request from '../../utils/request';
+import auth from "../../utils/auth";
+import request from "../../utils/request";
 
-import form from './forms.json';
-import './styles.css';
+import form from "./forms.json";
+import "./styles.css";
 
 class AuthPage extends React.Component {
   state = { value: {}, errors: [], didCheckErrors: false };
@@ -39,17 +39,17 @@ class AuthPage extends React.Component {
     let requestURL;
 
     switch (this.props.match.params.authType) {
-      case 'login':
-        requestURL = 'http://localhost:1337/auth/local';
+      case "login":
+        requestURL = "http://localhost:1337/auth/local";
         break;
-      case 'register':
-        requestURL = 'http://localhost:1337/auth/local/register';
+      case "register":
+        requestURL = "http://localhost:1337/auth/local/register";
         break;
-      case 'reset-password':
-        requestURL = 'http://localhost:1337/auth/reset-password';
+      case "reset-password":
+        requestURL = "http://localhost:1337/auth/reset-password";
         break;
-      case 'forgot-password':
-        requestURL = 'http://localhost:1337/auth/forgot-password';
+      case "forgot-password":
+        requestURL = "http://localhost:1337/auth/forgot-password";
         break;
       default:
     }
@@ -59,14 +59,14 @@ class AuthPage extends React.Component {
 
   generateForm = props => {
     const params = props.location.search
-      ? replace(props.location.search, '?code=', '')
+      ? replace(props.location.search, "?code=", "")
       : props.match.params.id;
     this.setForm(props.match.params.authType, params);
   };
 
   handleChange = ({ target }) =>
     this.setState({
-      value: { ...this.state.value, [target.name]: target.value },
+      value: { ...this.state.value, [target.name]: target.value }
     });
 
   handleSubmit = e => {
@@ -75,11 +75,11 @@ class AuthPage extends React.Component {
     const requestURL = this.getRequestURL();
 
     // This line is required for the callback url to redirect your user to app
-    if (this.props.match.params.authType === 'forgot-password') {
-      set(body, 'url', 'http://localhost:3000/auth/reset-password');
+    if (this.props.match.params.authType === "forgot-password") {
+      set(body, "url", "http://localhost:3000/auth/reset-password");
     }
-
-    request(requestURL, { method: 'POST', body: this.state.value })
+    console.log("Request body", this.state.value);
+    request(requestURL, { method: "POST", body: this.state.value })
       .then(response => {
         auth.setToken(response.jwt, body.rememberMe);
         auth.setUserInfo(response.user, body.rememberMe);
@@ -88,15 +88,20 @@ class AuthPage extends React.Component {
       .catch(err => {
         // TODO handle errors for other views
         // This is just an example
-        const errors = [
-          { name: 'identifier', errors: [err.response.payload.message] },
-        ];
+        let errors;
+        if (err.response) {
+          errors = [
+            { name: "identifier", errors: [err.response.payload.message] }
+          ];
+        } else {
+          errors = [{ name: "identifier", errors: ["Connection refused."] }];
+        }
         this.setState({ didCheckErrors: !this.state.didCheckErrors, errors });
       });
   };
 
   redirectUser = () => {
-    this.props.history.push('/');
+    this.props.history.push("/");
   };
 
   /**
@@ -105,10 +110,10 @@ class AuthPage extends React.Component {
    * @param {String} email    Optionnal
    */
   setForm = (formType, email) => {
-    const value = get(form, ['data', formType], {});
+    const value = get(form, ["data", formType], {});
 
-    if (formType === 'reset-password') {
-      set(value, 'code', email);
+    if (formType === "reset-password") {
+      set(value, "code", email);
     }
     this.setState({ value });
   };
@@ -118,7 +123,7 @@ class AuthPage extends React.Component {
    * @return {Element} Returns navigation links
    */
   renderLink = () => {
-    if (this.props.match.params.authType === 'login') {
+    if (this.props.match.params.authType === "login") {
       return (
         <div>
           <Link to="/auth/forgot-password">Forgot Password</Link>
@@ -137,27 +142,27 @@ class AuthPage extends React.Component {
 
   render() {
     const divStyle =
-      this.props.match.params.authType === 'register'
-        ? { marginTop: '3.2rem' }
-        : { marginTop: '.9rem' };
-    const inputs = get(form, ['views', this.props.match.params.authType], []);
-    const providers = ['facebook', 'github', 'google', 'twitter']; // To remove a provider from the list just delete it from this array...
+      this.props.match.params.authType === "register"
+        ? { marginTop: "3.2rem" }
+        : { marginTop: ".9rem" };
+    const inputs = get(form, ["views", this.props.match.params.authType], []);
+    const providers = ["facebook", "github", "google", "twitter"]; // To remove a provider from the list just delete it from this array...
 
     return (
       <div className="authPage">
         <div className="wrapper">
           <div className="headerContainer">
-            {this.props.match.params.authType === 'register' ? (
+            {this.props.match.params.authType === "register" ? (
               <span>Welcome !</span>
             ) : (
               <img src={Logo} alt="logo" />
             )}
           </div>
           <div className="headerDescription">
-            {this.props.match.params.authType === 'register' ? (
+            {this.props.match.params.authType === "register" ? (
               <span>Please register to access the app.</span>
             ) : (
-              ''
+              ""
             )}
           </div>
           <div className="formContainer" style={divStyle}>
@@ -171,34 +176,34 @@ class AuthPage extends React.Component {
               </div>
               <FormDivider />
               <form onSubmit={this.handleSubmit}>
-                <div className="row" style={{ textAlign: 'start' }}>
+                <div className="row" style={{ textAlign: "start" }}>
                   {map(inputs, (input, key) => (
                     <Input
                       autoFocus={key === 0}
-                      customBootstrapClass={get(input, 'customBootstrapClass')}
+                      customBootstrapClass={get(input, "customBootstrapClass")}
                       didCheckErrors={this.state.didCheckErrors}
                       errors={get(
                         this.state.errors,
                         [
-                          findIndex(this.state.errors, ['name', input.name]),
-                          'errors',
+                          findIndex(this.state.errors, ["name", input.name]),
+                          "errors"
                         ],
                         []
                       )}
-                      key={get(input, 'name')}
-                      label={get(input, 'label')}
-                      name={get(input, 'name')}
+                      key={get(input, "name")}
+                      label={get(input, "label")}
+                      name={get(input, "name")}
                       onChange={this.handleChange}
-                      placeholder={get(input, 'placeholder')}
-                      type={get(input, 'type')}
+                      placeholder={get(input, "placeholder")}
+                      type={get(input, "type")}
                       validations={{ required: true }}
-                      value={get(this.state.value, get(input, 'name'), '')}
+                      value={get(this.state.value, get(input, "name"), "")}
                     />
                   ))}
                   <div className="col-md-12 buttonContainer">
                     <Button
                       label="Submit"
-                      style={{ width: '100%' }}
+                      style={{ width: "100%" }}
                       primary
                       type="submit"
                     />
@@ -217,7 +222,7 @@ class AuthPage extends React.Component {
 AuthPage.defaultProps = {};
 AuthPage.propTypes = {
   location: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired
 };
 
 export default AuthPage;
