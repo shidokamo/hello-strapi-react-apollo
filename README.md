@@ -1,23 +1,29 @@
 # Hello React Apollo
+
 Strapi の公式レポジトリからコピーした、Apollo client を用いた通信
 の例です。
 
 ## オリジナルからの変更点
-* オリジナルのコードは、strapi v2.x 系列を用いていたようですが、v3.x 系列での動作を確認しています。
-* npm パッケージを全てアップデートしました。
+
+- オリジナルのコードは、strapi v2.x 系列を用いていたようですが、v3.x 系列での動作を確認しています。
+- npm パッケージを全てアップデートしました。
+
+## strapi の設定
+
+- localhost に strapi を起動してください。（もしくは、localhost:1337 の設定を書き換えてください）
+- product というコンテンツタイプを作成し、'name', 'description' というフィールドを作成してください。
 
 # 以下がオリジナルの README です。
 
 This boilerplate uses the GraphQL API when the GraphQL plugin is installed in your project.
 
-``` bash
+```bash
 cd react-apollo
 npm install
 npm start
 ```
 
-> ⚠️  Make sure you're using MongoDB as a database.
-
+> ⚠️ Make sure you're using MongoDB as a database.
 
 ## Testing the upload feature
 
@@ -48,11 +54,13 @@ then in your `/api/product/model/Product.settings.json` copy-paste the following
   }
 }
 ```
+
 Register the admin user in Strapi and you're good to go.
 
 ## Fetching data
 
 You can fetch data in two different ways (both are implemented)
+
 - using the `<Query />` component (see the `ProductDetailsPage`)
 - manually using the client that is exported (see the `EditPage`)
 
