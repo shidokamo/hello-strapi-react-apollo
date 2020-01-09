@@ -33,7 +33,7 @@ const TableRow = props => {
             : get(props.data, ['header', 'url'], '');
           // check if we need to add the strapiBackendURL if the upload provider is local
           const src = startsWith(picture, '/')
-            ? `http://localhost:1337${picture}`
+            ? `${process.env.STRAPI_URL}${picture}`
             : picture;
 
           return (

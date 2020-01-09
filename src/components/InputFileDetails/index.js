@@ -21,7 +21,7 @@ function InputFileDetails(props) {
   }
 
   const url = startsWith(props.file.url, '/')
-    ? `http://localhost:1337${props.file.url}`
+    ? `${process.env.STRAPI_URL}${props.file.url}`
     : props.file.url;
 
   return (

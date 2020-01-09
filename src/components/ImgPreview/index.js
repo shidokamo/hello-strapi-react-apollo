@@ -93,7 +93,7 @@ class ImgPreview extends React.Component {
     } else if (has(file, 'url')) {
       const isImg = this.isPictureType(file.name);
       const imgURL =
-        file.url[0] === '/' ? `http://localhost:1337${file.url}` : file.url;
+        file.url[0] === '/' ? `${process.env.STRAPI_URL}${file.url}` : file.url;
 
       this.setState({ isImg, imgURL });
     } else {

@@ -92,8 +92,8 @@ class EditPage extends React.Component {
     const method = params.id === 'create' ? 'POST' : 'PUT';
     const requestURL =
       params.id === 'create'
-        ? `http://localhost:1337/${params.contentType}`
-        : `http://localhost:1337/${params.contentType}/${params.id}`;
+        ? `${process.env.STRAPI_URL}/${params.contentType}`
+        : `${process.env.STRAPI_URL}/${params.contentType}/${params.id}`;
     return request(requestURL, { method, body: body })
       .catch(err => {
         console.log('err', err.response);

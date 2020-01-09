@@ -76,7 +76,7 @@ class AuthPage extends React.Component {
 
     // This line is required for the callback url to redirect your user to app
     if (this.props.match.params.authType === 'forgot-password') {
-      set(body, 'url', 'http://localhost:3000/auth/reset-password');
+      set(body, 'url', `${process.env.STRAPI_URL}/auth/reset-password`);
     }
     console.log('Request body', this.state.value);
     request(requestURL, { method: 'POST', body: this.state.value })

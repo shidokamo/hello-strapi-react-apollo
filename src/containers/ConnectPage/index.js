@@ -24,7 +24,7 @@ class ConnectPage extends React.Component {
       },
       location: { search },
     } = this.props;
-    const requestURL = `http://localhost:1337/auth/${provider}/callback${search}`;
+    const requestURL = `${process.env.STRAPI_URL}/auth/${provider}/callback${search}`;
 
     request(requestURL, { method: 'GET' })
       .then(response => {
