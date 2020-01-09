@@ -17,7 +17,7 @@ function InputErrors(props) {
               'form-control-feedback',
               'invalid-feedback',
               'errorContainer',
-              !isEmpty(props.className) && props.className
+              !isEmpty(props.className) && props.className,
             )}
             key={key}
             style={divStyle}

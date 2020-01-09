@@ -1,8 +1,8 @@
 /**
-*
-* Table
-*
-*/
+ *
+ * Table
+ *
+ */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -13,14 +13,14 @@ import TableEmpty from '../TableEmpty';
 
 import './styles.scss';
 
-const Table = (props) => {
+const Table = props => {
   return (
     <table className="table tableWrapper">
-      <TableHeader
-        headers={props.headers}
-      />
+      <TableHeader headers={props.headers} />
       <tbody>
-        {props.data.length === 0 && <TableEmpty colSpan={props.headers.length} />}
+        {props.data.length === 0 && (
+          <TableEmpty colSpan={props.headers.length} />
+        )}
         {props.data.length !== 0 &&
           props.data.map((value, key) => (
             <TableRow
@@ -29,13 +29,11 @@ const Table = (props) => {
               headers={props.headers}
               onClick={props.onClick}
             />
-          )
-        )}
+          ))}
       </tbody>
     </table>
   );
-
-}
+};
 
 Table.defaultProps = {
   data: [],
@@ -48,6 +46,5 @@ Table.propTypes = {
   headers: PropTypes.array,
   onClick: PropTypes.func,
 };
-
 
 export default Table;

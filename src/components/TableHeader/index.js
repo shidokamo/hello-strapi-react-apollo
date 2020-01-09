@@ -15,15 +15,13 @@ const TableHeader = ({ headers }) => {
       <tr>
         {headers.map(header => (
           <th key={header}>
-            <span>
-              {header}
-            </span>
+            <span>{header}</span>
           </th>
         ))}
       </tr>
     </thead>
   );
-}
+};
 
 TableHeader.defaultProps = {
   headers: [],

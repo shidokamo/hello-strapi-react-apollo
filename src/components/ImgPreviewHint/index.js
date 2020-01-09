@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import './styles.scss';
 
 function ImgPreviewHint(props) {
-
   let pStyle;
 
   switch (true) {
@@ -27,7 +26,12 @@ function ImgPreviewHint(props) {
   const browse = <u onClick={props.onClick}>browse</u>;
 
   return (
-    <p className="imgPreviewHint" style={pStyle} onDragEnter={(e) => e.stopPropagation()} onDrop={props.onDrop}>
+    <p
+      className="imgPreviewHint"
+      style={pStyle}
+      onDragEnter={e => e.stopPropagation()}
+      onDrop={props.onDrop}
+    >
       <span>Drag & drop or {browse} for a file to upload</span>
     </p>
   );

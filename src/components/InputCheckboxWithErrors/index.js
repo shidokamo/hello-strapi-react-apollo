@@ -84,7 +84,7 @@ class InputCheckboxWithErrors extends React.Component {
         className={cn(
           'inputCheckboxContainer',
           customBootstrapClass,
-          !isEmpty(className) && className
+          !isEmpty(className) && className,
         )}
         style={style}
       >
@@ -106,7 +106,7 @@ class InputCheckboxWithErrors extends React.Component {
         <InputDescription
           className={cn(
             'inputCheckboxDescriptionContainer',
-            inputDescriptionClassName
+            inputDescriptionClassName,
           )}
           message={this.props.inputDescription}
           style={inputDescriptionStyle}

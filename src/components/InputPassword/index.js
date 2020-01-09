@@ -48,7 +48,7 @@ class InputPassword extends React.Component {
             'inputPassword',
             'form-control',
             !deactivateErrorHighlight && error && 'is-invalid',
-            !isEmpty(className) && className
+            !isEmpty(className) && className,
           )}
           disabled={disabled}
           id={name}

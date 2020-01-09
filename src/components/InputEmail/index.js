@@ -43,7 +43,7 @@ class InputEmail extends React.Component {
         className={cn(
           'inputEmailContainer',
           'input-group',
-          !isEmpty(className) && className
+          !isEmpty(className) && className,
         )}
         style={style}
       >
@@ -52,7 +52,7 @@ class InputEmail extends React.Component {
             'input-group-addon',
             'addonEmail',
             this.state.isFocused && 'addonFocus',
-            !deactivateErrorHighlight && error && 'errorAddon'
+            !deactivateErrorHighlight && error && 'errorAddon',
           )}
         />
         <input
@@ -64,7 +64,7 @@ class InputEmail extends React.Component {
             !deactivateErrorHighlight &&
               error &&
               this.state.isFocused &&
-              'invalidEmail'
+              'invalidEmail',
           )}
           disabled={disabled}
           id={name}

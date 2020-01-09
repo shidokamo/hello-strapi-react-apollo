@@ -51,20 +51,15 @@ function formatQueryParams(params) {
  *
  * @return {object}           The response data
  */
-export default function request(
-  url,
-  options = {},
-  stringify = true
-) {
+export default function request(url, options = {}, stringify = true) {
   // Set headers
   if (stringify) {
-
     options.headers = Object.assign(
       {
         'Content-Type': 'application/json',
       },
       options.headers,
-      {}
+      {},
     );
   }
 
@@ -75,7 +70,7 @@ export default function request(
       {
         Authorization: `Bearer ${token}`,
       },
-      options.headers
+      options.headers,
     );
   }
 

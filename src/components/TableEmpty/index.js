@@ -15,7 +15,7 @@ const TableEmpty = ({ colSpan }) => {
       <td colSpan={colSpan}>There is no product...</td>
     </tr>
   );
-}
+};
 
 TableEmpty.defaultProps = {
   colSpan: 0,

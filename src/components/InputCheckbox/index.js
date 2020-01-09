@@ -58,7 +58,7 @@ class InputCheckbox extends React.Component {
           className={cn(
             'form-check-label',
             'labelCheckbox',
-            disabled && 'disabled'
+            disabled && 'disabled',
           )}
           htmlFor={name}
         >
@@ -85,7 +85,7 @@ class InputCheckbox extends React.Component {
         className={cn(
           'form-check',
           'inputCheckbox',
-          !isEmpty(className) && className
+          !isEmpty(className) && className,
         )}
         style={style}
       >

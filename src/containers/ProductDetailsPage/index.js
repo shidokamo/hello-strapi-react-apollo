@@ -3,16 +3,16 @@
  * ProductDetailsPage
  */
 
-import React from "react";
-import { Query } from "@apollo/react-components";
-import { Link } from "react-router-dom";
-import { GET_PRODUCT } from "../../queries";
+import React from 'react';
+import { Query } from '@apollo/react-components';
+import { Link } from 'react-router-dom';
+import { GET_PRODUCT } from '../../queries';
 
 const ProductDetailsPage = props => {
   const {
     match: {
-      params: { id }
-    }
+      params: { id },
+    },
   } = props;
 
   return (
@@ -57,9 +57,9 @@ const ProductDetailsPage = props => {
 
 const styles = {
   linkWrapper: {
-    marginTop: "10px",
-    marginBottom: "10px"
-  }
+    marginTop: '10px',
+    marginBottom: '10px',
+  },
 };
 
 export default ProductDetailsPage;

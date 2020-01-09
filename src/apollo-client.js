@@ -2,10 +2,10 @@ import {
   ApolloClient,
   HttpLink,
   ApolloLink,
-  InMemoryCache
-} from "@apollo/client";
+  InMemoryCache,
+} from '@apollo/client';
 
-import auth from "./utils/auth";
+import auth from './utils/auth';
 
 const httpLink = new HttpLink({ uri: `http://localhost:1337/graphql` });
 
@@ -15,8 +15,8 @@ const middlewareAuthLink = new ApolloLink((operation, forward) => {
   const authorizationHeader = token ? `Bearer ${token}` : null;
   operation.setContext({
     headers: {
-      authorization: authorizationHeader
-    }
+      authorization: authorizationHeader,
+    },
   });
   return forward(operation);
 });
@@ -27,19 +27,19 @@ const httpLinkWithAuthToken = middlewareAuthLink.concat(httpLink);
 // to increase performances
 const defaultOptions = {
   watchQuery: {
-    fetchPolicy: "network-only",
-    errorPolicy: "ignore"
+    fetchPolicy: 'network-only',
+    errorPolicy: 'ignore',
   },
   query: {
-    fetchPolicy: "network-only",
-    errorPolicy: "all"
-  }
+    fetchPolicy: 'network-only',
+    errorPolicy: 'all',
+  },
 };
 
 const client = new ApolloClient({
   link: httpLinkWithAuthToken,
   cache: new InMemoryCache(),
-  defaultOptions: defaultOptions
+  defaultOptions: defaultOptions,
 });
 
 export default client;

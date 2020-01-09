@@ -25,7 +25,7 @@ function ImgPreviewArrow(props) {
         props.type !== 'left' && 'arrowRight',
       )}
       style={divStyle}
-      onClick={(e) => {
+      onClick={e => {
         e.preventDefault();
         e.stopPropagation();
         props.onClick(props.type);
@@ -33,7 +33,7 @@ function ImgPreviewArrow(props) {
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}
     />
-  )
+  );
 }
 
 ImgPreviewArrow.defaultProps = {

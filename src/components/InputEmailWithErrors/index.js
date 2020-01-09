@@ -64,7 +64,7 @@ class InputEmailWithErrors extends React.Component {
       const errors = validateInput(
         target.value,
         this.props.validations,
-        'email'
+        'email',
       );
       this.setState({ errors, hasInitialValue: true });
     }
@@ -112,7 +112,7 @@ class InputEmailWithErrors extends React.Component {
         className={cn(
           'inputEmailWithErrors',
           this.props.customBootstrapClass,
-          !isEmpty(this.props.className) && this.props.className
+          !isEmpty(this.props.className) && this.props.className,
         )}
         style={style}
       >

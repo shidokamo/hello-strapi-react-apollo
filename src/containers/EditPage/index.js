@@ -38,39 +38,48 @@ class EditPage extends React.Component {
 
   async componentDidMount() {
     if (this.props.match.params.id !== 'create') {
-      const { match: { params } } = this.props
+      const {
+        match: { params },
+      } = this.props;
 
       // FETCH data using graphql
       const { data } = await client.query({
         query: GET_PRODUCT,
-        variables: { id: params.id }
+        variables: { id: params.id },
       });
 
-      this.setState({ inititalData: data[params.contentType], modifiedData: data[params.contentType] });
+      this.setState({
+        inititalData: data[params.contentType],
+        modifiedData: data[params.contentType],
+      });
     }
   }
 
   // Reset form to its inital value
   cancel = () => this.setState({ modifiedData: this.state.inititalData });
 
-  handleChange = (e) => {
+  handleChange = e => {
     const name = e.target.name;
 
     this.setState({
       modifiedData: { ...this.state.modifiedData, [name]: e.target.value },
     });
-  }
+  };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     // TODO handle errors
-    const { match: { params } } = this.props;
+    const {
+      match: { params },
+    } = this.props;
     const { modifiedData } = this.state;
     const body = Object.keys(modifiedData).reduce((acc, current) => {
-      if (findIndex(FILE_RELATIONS[params.contentType], ['name', current]) === -1) {
+      if (
+        findIndex(FILE_RELATIONS[params.contentType], ['name', current]) === -1
+      ) {
         acc[current] = modifiedData[current];
       } else {
-        const alreadyUploadedFiles = modifiedData[current].filter(file =>  {
+        const alreadyUploadedFiles = modifiedData[current].filter(file => {
           if (file instanceof File === false) {
             return file;
           }
@@ -81,20 +90,29 @@ class EditPage extends React.Component {
     }, {});
 
     const method = params.id === 'create' ? 'POST' : 'PUT';
-    const requestURL =  params.id === 'create' ? `http://localhost:1337/${params.contentType}`: `http://localhost:1337/${params.contentType}/${params.id}`;
+    const requestURL =
+      params.id === 'create'
+        ? `http://localhost:1337/${params.contentType}`
+        : `http://localhost:1337/${params.contentType}/${params.id}`;
     return request(requestURL, { method, body: body })
       .catch(err => {
         console.log('err', err.response);
         //  TODO: Handle errors
-      }).finally(() => {
+      })
+      .finally(() => {
         // TODO: make sure the redirection happens when all the files have been updated
         this.props.history.push(`/${params.contentType}s`);
       });
-  }
+  };
 
   render() {
-    const { match: { params } } = this.props;
-    const title = params.id === 'create' ? `Create a new ${params.contentType}` : `Edit ${params.id}`;
+    const {
+      match: { params },
+    } = this.props;
+    const title =
+      params.id === 'create'
+        ? `Create a new ${params.contentType}`
+        : `Edit ${params.id}`;
     const display = layout[params.contentType];
 
     return (
@@ -104,7 +122,7 @@ class EditPage extends React.Component {
           <Link to={`/${params.contentType}s`}>Back</Link>
           <form className="formWrapper" onSubmit={this.handleSubmit}>
             <div className="row">
-              {display.map((input) => (
+              {display.map(input => (
                 <Input
                   didCheckErrors={this.state.didCheckErrors}
                   errors={get(
@@ -113,22 +131,30 @@ class EditPage extends React.Component {
                       findIndex(this.state.errors, ['name', input.name]),
                       'errors',
                     ],
-                    []
+                    [],
                   )}
                   key={input.name}
                   label={input.name}
                   name={input.name}
                   onChange={this.handleChange}
                   type={input.type}
-                  value={get(this.state.modifiedData, input.name, input.type === 'file' ? [] : '')}
+                  value={get(
+                    this.state.modifiedData,
+                    input.name,
+                    input.type === 'file' ? [] : '',
+                  )}
                   multiple
                 />
               ))}
             </div>
             <div className="row">
               <div className="col-md-12">
-                <Button type="button" onClick={this.cancel}>Cancel</Button>
-                <Button type="submit" primary>Submit</Button>
+                <Button type="button" onClick={this.cancel}>
+                  Cancel
+                </Button>
+                <Button type="submit" primary>
+                  Submit
+                </Button>
               </div>
             </div>
           </form>

@@ -105,7 +105,7 @@ class InputTextWithErrors extends React.Component {
         className={cn(
           'inputTextWithErrors',
           customBootstrapClass,
-          !isEmpty(className) && className
+          !isEmpty(className) && className,
         )}
         style={style}
       >

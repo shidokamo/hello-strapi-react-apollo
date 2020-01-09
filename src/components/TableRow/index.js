@@ -14,12 +14,11 @@ import { Link } from 'react-router-dom';
 
 import './styles.scss';
 
-
-const TableRow = (props) => {
+const TableRow = props => {
   return (
     <tr
       className="tableRow"
-      onClick={(e) => {
+      onClick={e => {
         // Handle navigation to EditPage container
         e.preventDefault();
         e.stopPropagation();
@@ -29,9 +28,13 @@ const TableRow = (props) => {
       {props.headers.map(header => {
         if (header === 'pictures' && !isEmpty(props.data[header])) {
           // Get the first pictures for display
-          const picture = isArray(props.data[header]) ? get(props.data, [header, '0', 'url'], '') : get(props.data, ['header', 'url'], '');
+          const picture = isArray(props.data[header])
+            ? get(props.data, [header, '0', 'url'], '')
+            : get(props.data, ['header', 'url'], '');
           // check if we need to add the strapiBackendURL if the upload provider is local
-          const src = startsWith(picture, '/') ? `http://localhost:1337${picture}` : picture;
+          const src = startsWith(picture, '/')
+            ? `http://localhost:1337${picture}`
+            : picture;
 
           return (
             <td key={header}>
@@ -43,29 +46,30 @@ const TableRow = (props) => {
         // Prepare for actions
         if (header === '') {
           return (
-            <td key={header} onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation();
-            }}>
-              <Link to={`/form/product/${props.data.id || props.data._id}`}>Edit</Link>
+            <td
+              key={header}
+              onClick={e => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
+              <Link to={`/form/product/${props.data.id || props.data._id}`}>
+                Edit
+              </Link>
             </td>
           );
         }
 
-        return (
-          <td key={header}>
-            {props.data[header]}
-          </td>
-        );
+        return <td key={header}>{props.data[header]}</td>;
       })}
     </tr>
   );
-}
+};
 
 TableRow.defaultProps = {
   data: {},
   headers: [],
-  onClick: (e) => {
+  onClick: e => {
     e.preventDefault();
     console.log('click');
   },

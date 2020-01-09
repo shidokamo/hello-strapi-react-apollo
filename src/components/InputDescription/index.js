@@ -19,7 +19,7 @@ function InputDescription(props) {
     <div
       className={cn(
         'inputDescriptionContainer',
-        !isEmpty(props.className) && props.className
+        !isEmpty(props.className) && props.className,
       )}
       style={props.style}
     >

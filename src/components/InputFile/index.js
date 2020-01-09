@@ -21,10 +21,9 @@ class InputFile extends React.Component {
     position: 0,
   };
 
-  addFilesToProps = (files) => {
+  addFilesToProps = files => {
     const initAcc = this.props.multiple ? cloneDeep(this.props.value) : {};
     const value = Object.keys(files).reduce((acc, current) => {
-
       if (this.props.multiple) {
         acc.push(files[current]);
       } else if (current === '0') {
@@ -32,7 +31,7 @@ class InputFile extends React.Component {
       }
 
       return acc;
-    }, initAcc)
+    }, initAcc);
 
     const target = {
       name: this.props.name,
@@ -42,22 +41,22 @@ class InputFile extends React.Component {
 
     this.setState({ isUploading: !this.state.isUploading });
     this.props.onChange({ target });
-  }
+  };
 
   handleChange = ({ target }) => this.addFilesToProps(target.files);
 
-  handleClick = (e) => {
+  handleClick = e => {
     e.preventDefault();
     e.stopPropagation();
     this.refs.inputFile.click();
-  }
+  };
 
-  onDrop = (e) => {
+  onDrop = e => {
     e.preventDefault();
     this.addFilesToProps(e.dataTransfer.files);
-  }
+  };
 
-  handleFileDelete = (e) => {
+  handleFileDelete = e => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -83,21 +82,16 @@ class InputFile extends React.Component {
       this.updateFilePosition(newPosition, value.length);
     }
     this.setState({ didDeleteFile: !this.state.didDeleteFile });
-  }
+  };
 
   updateFilePosition = (newPosition, size = this.props.value.length) => {
     const label = size === 0 ? false : newPosition + 1;
     this.props.setLabel(label);
     this.setState({ position: newPosition });
-  }
+  };
 
   render() {
-    const {
-      multiple,
-      name,
-      onChange,
-      value,
-    } = this.props;
+    const { multiple, name, onChange, value } = this.props;
 
     return (
       <div>
@@ -113,7 +107,7 @@ class InputFile extends React.Component {
           position={this.state.position}
           updateFilePosition={this.updateFilePosition}
         />
-        <label style={{ width: '100%'}}>
+        <label style={{ width: '100%' }}>
           <input
             className="inputFile"
             multiple={multiple}
@@ -124,7 +118,10 @@ class InputFile extends React.Component {
           />
 
           <div className="inputFileButtonContainer">
-            <i className="fa fa-plus" style={{ marginRight: '10px', marginBottom: '2px' }} />
+            <i
+              className="fa fa-plus"
+              style={{ marginRight: '10px', marginBottom: '2px' }}
+            />
             <span style={{ fontSize: '12px' }}>ADD A NEW FILE</span>
           </div>
         </label>

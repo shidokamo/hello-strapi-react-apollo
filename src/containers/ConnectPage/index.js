@@ -19,7 +19,9 @@ class ConnectPage extends React.Component {
   // This implementation was just made for the sake of the example and to silmplify the logic
   componentDidMount() {
     const {
-      match: { params: { provider } },
+      match: {
+        params: { provider },
+      },
       location: { search },
     } = this.props;
     const requestURL = `http://localhost:1337/auth/${provider}/callback${search}`;

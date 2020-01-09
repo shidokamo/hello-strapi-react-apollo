@@ -26,14 +26,19 @@ class InputFileWithErrors extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.state.hasValue && !isEmpty(nextProps.value) && nextProps.multiple && differenceBy(nextProps.value, this.props.value, 'name').length > 0) {
+    if (
+      !this.state.hasValue &&
+      !isEmpty(nextProps.value) &&
+      nextProps.multiple &&
+      differenceBy(nextProps.value, this.props.value, 'name').length > 0
+    ) {
       this.setState({ label: 1, hasValue: true });
     }
   }
 
-  setLabel = (label) => {
+  setLabel = label => {
     this.setState({ label });
-  }
+  };
   // TODO handle errors lifecycle
   render() {
     const {
@@ -53,7 +58,7 @@ class InputFileWithErrors extends React.Component {
     } = this.props;
 
     const labelClass = labelClassName === '' ? 'labelFile' : labelClassName;
-  
+
     return (
       <div
         className={cn(
@@ -64,15 +69,16 @@ class InputFileWithErrors extends React.Component {
         style={style}
       >
         <div className="labelContainer">
-
           <Label
             className={labelClass}
             htmlFor={`${name}NotNeeded`}
             message={label}
             style={labelStyle}
           />
-          { this.state.label && (
-            <span className="labelNumber">&nbsp;({this.state.label}/{value.length})</span>
+          {this.state.label && (
+            <span className="labelNumber">
+              &nbsp;({this.state.label}/{value.length})
+            </span>
           )}
         </div>
         <InputFile
