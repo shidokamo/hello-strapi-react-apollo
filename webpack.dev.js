@@ -21,6 +21,7 @@ module.exports = merge(common, {
   devServer: {
     contentBase: './dist-dev', // Content not from webpack is served from
     publicPath: '/', // webpack output is served from here
+    historyApiFallback: true, // redirect 404 to index.html
     hot: true,
     host: '0.0.0.0',
     port: 3100,
