@@ -6,14 +6,23 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { get, isArray, isEmpty, startsWith } from 'lodash';
 import { Link } from 'react-router-dom';
-
-// import IcoContainer from 'components/IcoContainer';
+import unified from 'unified';
+import markdown from 'remark-parse';
+import slug from 'remark-slug';
+import remark2rehype from 'remark-rehype';
+import html from 'rehype-stringify';
 
 import './styles.scss';
 
 const MarkdownSection = props => {
+  const { contents } = unified()
+    .use(markdown) // パーサー(文字列をremarkの構文木に変換)
+    .use(slug) // トランスフォーマー(章にidをつける)
+    .use(remark2rehype) // トランスフォーマー(マークダウンからHTMLに変換)
+    .use(html) // コンパイラー(HTML構文木を文字列に変換)
+    .processSync(props.data.description);
+
   return (
     <div
       className="markdownSection"
@@ -25,7 +34,7 @@ const MarkdownSection = props => {
       }}
     >
       <Link to={`/form/product/${props.data.id || props.data._id}`}>
-        {props.data.description}
+        <div dangerouslySetInnerHTML={{ __html: contents }} />
       </Link>
     </div>
   );
