@@ -11,6 +11,7 @@ import { Query } from '@apollo/react-components';
 import { GET_PRODUCTS } from '../../queries';
 
 import Table from '../../components/Table';
+import Markdown from '../../components/Markdown';
 // Utils
 
 import './styles.scss';
@@ -47,6 +48,13 @@ class ProductsPage extends React.Component {
                 </div>
                 <div className="row">
                   <Table
+                    data={data.products}
+                    headers={['_id', 'name', 'description', '']}
+                    onClick={this.onClick}
+                  />
+                </div>
+                <div className="row">
+                  <Markdown
                     data={data.products}
                     headers={['_id', 'name', 'description', '']}
                     onClick={this.onClick}
