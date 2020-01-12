@@ -19,3 +19,20 @@ export const GET_PRODUCTS = gql`
     }
   }
 `;
+
+export const ADD_PRODUCT = gql`
+  mutation($name: !String, $description: !String) {
+    createProduct(input: {
+      data: {
+        name: $name
+        description: $description
+      }
+    }) {
+      product {
+        name
+        description
+      }
+    }
+  }
+`;
+
