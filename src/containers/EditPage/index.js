@@ -5,6 +5,7 @@
  */
 
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 // Components
@@ -23,11 +24,7 @@ const FILE_RELATIONS = {
 
 const EditPage = props => {
   // Get router URI information
-  const {
-    match: {
-      params: { id },
-    },
-  } = props;
+  let { id, contentType } = useParams;
 
   const [description, setDescription] = useState('');
   const [name, setName] = useState('');
@@ -36,7 +33,7 @@ const EditPage = props => {
 
   const title =
     id === 'create'
-      ? `Create a new ${props.contentType}` // You can get contentType from Router
+      ? `Create a new ${contentType}` // You can get contentType from Router
       : `Edit ${id}`;
 
   if (id !== 'create') {
@@ -49,17 +46,17 @@ const EditPage = props => {
     setDescription(data.product.description);
   }
 
-  handleChange = e => {
+  const handleChange = e => {
     setName(e.target.name);
     setDescription(e.target.value);
     console.log(name, description);
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (props.id !== 'create') {
+    if (id !== 'create') {
       updateProduct({
-        variables: { id: props.id, name: name, description: description },
+        variables: { id: id, name: name, description: description },
       });
     } else {
       createProduct({ variables: { name: name, description: description } });
@@ -74,7 +71,7 @@ const EditPage = props => {
     <div className="editPageWrapper">
       <div className="container-fluid">
         <h1>{title}</h1>
-        <Link to={`/${params.contentType}s`}>Back</Link>
+        <Link to={`/${contentType}s`}>Back</Link>
         <form className="formWrapper" onSubmit={handleSubmit}>
           <div className="row">
             <form onSubmit={handleSubmit}></form>
