@@ -22,26 +22,31 @@ const FILE_RELATIONS = {
 };
 
 const EditPage = props => {
+  // Get router URI information
+  const {
+    match: {
+      params: { id },
+    },
+  } = props;
+
   const [description, setDescription] = useState('');
   const [name, setName] = useState('');
+  const [updateProduct] = useMutation(UPDATE_PRODUCT);
+  const [createProduct] = useMutation(CREATE_PRODUCT);
 
   const title =
-    props.id === 'create'
+    id === 'create'
       ? `Create a new ${props.contentType}` // You can get contentType from Router
-      : `Edit ${props.id}`;
+      : `Edit ${id}`;
 
-  if (props.id !== 'create') {
+  if (id !== 'create') {
     const { loading, error, data } = useQuery(GET_PRODUCT, {
-      variables: { id: props.id },
+      variables: { id: id },
     });
     if (loading) return <p>loading...</p>;
     if (error) return <p>GraphQL error</p>;
     setName(data.product.name);
     setDescription(data.product.description);
-
-    const [updateProduct] = useMutation(UPDATE_PRODUCT);
-  } else {
-    const [createProduct] = useMutation(CREATE_PRODUCT);
   }
 
   handleChange = e => {
