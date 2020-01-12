@@ -20,14 +20,9 @@ export const GET_PRODUCTS = gql`
   }
 `;
 
-export const ADD_PRODUCT = gql`
-  mutation($name: !String, $description: !String) {
-    createProduct(input: {
-      data: {
-        name: $name
-        description: $description
-      }
-    }) {
+export const CREATE_PRODUCT = gql`
+  mutation($name: String!, $description: String!) {
+    createProduct(input: { data: { name: $name, description: $description } }) {
       product {
         name
         description
@@ -36,3 +31,18 @@ export const ADD_PRODUCT = gql`
   }
 `;
 
+export const UPDATE_PRODUCT = gql`
+  mutation($id: String!, $name: String!, $description: String!) {
+    updateProduct(
+      input: {
+        where: { id: $id }
+        data: { name: $name, description: $description }
+      }
+    ) {
+      product {
+        name
+        description
+      }
+    }
+  }
+`;
