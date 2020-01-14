@@ -24,26 +24,29 @@ const FILE_RELATIONS = {
 
 const EditPage = props => {
   // Get router URI information
-  let { id, contentType } = useParams;
+  let { id, contentType } = useParams();
+  console.log('id:', id);
+  console.log('contentType:', contentType);
 
-  const [description, setDescription] = useState('');
-  const [name, setName] = useState('');
+  //const [description, setDescription] = useState('');
+  //const [name, setName] = useState('');
+  let description = '';
+  let name = '';
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
   const [createProduct] = useMutation(CREATE_PRODUCT);
 
-  const title =
-    id === 'create'
-      ? `Create a new ${contentType}` // You can get contentType from Router
-      : `Edit ${id}`;
+  let title = id === 'create' ? `Create a new ${contentType}` : `Edit ${id}`;
 
   if (id !== 'create') {
+    // if の中に hook を持ってくるのはまずいかも？
     const { loading, error, data } = useQuery(GET_PRODUCT, {
       variables: { id: id },
     });
     if (loading) return <p>loading...</p>;
     if (error) return <p>GraphQL error</p>;
-    setName(data.product.name);
-    setDescription(data.product.description);
+    description = data.product.description;
+    //setName(data.product.name);
+    //setDescription(data.product.description);
   }
 
   const handleChange = e => {
@@ -72,18 +75,34 @@ const EditPage = props => {
       <div className="container-fluid">
         <h1>{title}</h1>
         <Link to={`/${contentType}s`}>Back</Link>
-        <form className="formWrapper" onSubmit={handleSubmit}>
-          <div className="row">
-            <form onSubmit={handleSubmit}></form>
+        <div className="row" onChange={handleChange}>
+          <div className="col-md-4">
+            <p>Name</p>
           </div>
-          <div className="row">
-            <div className="col-md-12">
-              <Button type="submit" primary>
-                Submit
-              </Button>
-            </div>
+          <div className="col-md-8">
+            <input type="text"></input>>
           </div>
-        </form>
+          <div className="col-md-4">
+            <p>Description</p>
+          </div>
+          <div className="col-md-8">
+            <textarea rows="10" cols="50"></textarea>
+          </div>
+          <div className="col-md-4"></div>
+          <div className="col-md-8">
+            <p>${description}</p>
+          </div>
+        </div>
+        <div className="row">
+          <form onSubmit={handleSubmit}></form>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            <Button type="submit" primary>
+              Submit
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
