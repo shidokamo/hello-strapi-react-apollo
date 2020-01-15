@@ -29,6 +29,7 @@ const EditPage = props => {
   const title = `Edit ${id}`;
   const [newDescription, setDescription] = useState('');
   const [newName, setName] = useState('');
+  const [newMarkdown2html, setMarkdown2html] = useState('');
 
   // Mutation
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
@@ -44,19 +45,18 @@ const EditPage = props => {
   // これはなぜかうまくいかない。Hook の呼び出し順がおかしくなってエラーになる。
   // const [newDescription, setDescription] = useState(data.product.description);
   // const [newName, setName] = useState(data.product.name);
-  let markdown2html = '<h1>Please Edit</h1>';
 
   const handleChange = e => {
-    console.log(markdown2html);
-    markdown2html = unified()
+    const markdown2html = unified()
       .use(markdown) // パーサー(文字列をremarkの構文木に変換)
       .use(slug) // トランスフォーマー(章にidをつける)
       .use(remark2rehype) // トランスフォーマー(マークダウンからHTMLに変換)
       .use(html) // コンパイラー(HTML構文木を文字列に変換)
       .processSync(e.target.value);
     setDescription(e.target.value);
+    setMarkdown2html(markdown2html);
     console.log('New Description: ', newDescription);
-    console.log(markdown2html);
+    console.log('Markdown-to-html: ', newMarkdown2html);
 
     // // Decode html
     // let el = document.createElement('div');
@@ -119,7 +119,7 @@ const EditPage = props => {
               <p>Output</p>
             </div>
             <div className="col-md-8">
-              <div dangerouslySetInnerHTML={{ __html: markdown2html }} />
+              <div dangerouslySetInnerHTML={{ __html: newMarkdown2html }} />
             </div>
           </div>
           <div className="row">
