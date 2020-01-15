@@ -12,20 +12,15 @@ import { Link } from 'react-router-dom';
 import Button from '../../components/Button';
 
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_PRODUCT, CREATE_PRODUCT, UPDATE_PRODUCT } from '../../queries';
+import { GET_PRODUCT, UPDATE_PRODUCT } from '../../queries';
 
 import './styles.scss';
 
-// Constant used to when to send the files on the `/upload` instand of `/:contentType` route.
-const FILE_RELATIONS = {
-  product: [{ name: 'pictures', multiple: true }],
-};
-
 const EditPage = props => {
   // Hooks
-  const { id, contentType } = useParams(); // Get router URI
+  const { id } = useParams(); // Get router URI
   // Set page information
-  const title = id === 'create' ? `Create a new ${contentType}` : `Edit ${id}`;
+  const title = `Edit ${id}`;
   const [newDescription, setDescription] = useState('');
   const [newName, setName] = useState('');
 
@@ -66,7 +61,7 @@ const EditPage = props => {
     <div className="editPageWrapper">
       <div className="container-fluid">
         <h1>{title}</h1>
-        <Link to={`/${contentType}s`}>Back</Link>
+        <Link to={`/products`}>Back</Link>
         <form onSubmit={handleSubmit}>
           <div className="row">
             <div className="col-md-4">
@@ -95,7 +90,7 @@ const EditPage = props => {
           </div>
           <div className="row">
             <div className="col-md-12">
-              <p>${description}</p>
+              <p>{description}</p>
             </div>
           </div>
           <div className="row">

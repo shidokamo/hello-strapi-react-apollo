@@ -37,7 +37,7 @@ class App extends Component {
               path="/product/:id"
               component={ProductDetailsPage}
             />
-            <PrivateRoute path="/form/:contentType/:id" component={EditPage} />
+            <PrivateRoute path="/form/product/:id" component={EditPage} />
             <Route exact path="/connect/:provider" component={ConnectPage} />
             <Route path="" component={NotFoundPage} />
           </Switch>
