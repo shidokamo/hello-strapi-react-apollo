@@ -26,9 +26,10 @@ const EditPage = props => {
   const { id, contentType } = useParams(); // Get router URI
   // Set page information
   const title = id === 'create' ? `Create a new ${contentType}` : `Edit ${id}`;
-
   const [newDescription, setDescription] = useState('');
   const [newName, setName] = useState('');
+
+  // Mutation
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
 
   // Load existing data at initial mounting
@@ -39,17 +40,23 @@ const EditPage = props => {
   if (error) return <p>Failed to load product data.</p>;
   const name = data.product.name;
   const description = data.product.description;
+  // これはなぜかうまくいかない。Hook の呼び出し順がおかしくなってエラーになる。
+  // const [newDescription, setDescription] = useState(data.product.description);
+  // const [newName, setName] = useState(data.product.name);
 
   const handleSubmit = e => {
-    console.log('New Description', newDescription);
     e.preventDefault();
-    updateProduct({
-      variables: {
-        id: id,
-        name: newName,
-        description: newDescription,
-      },
-    });
+    console.log('New Name: ', newName);
+    console.log('New Description: ', newDescription);
+    if (newDescription || newName) {
+      updateProduct({
+        variables: {
+          id: id,
+          name: newName,
+          description: newDescription,
+        },
+      });
+    }
     // TODO:
     // catch -> finally ->
     //         this.props.history.push(`/${params.contentType}s`);
