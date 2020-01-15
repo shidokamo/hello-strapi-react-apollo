@@ -4,13 +4,12 @@
  *
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 // Components
 import Button from '../../components/Button';
-import Input from '../../components/InputsIndex';
 
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_PRODUCT, CREATE_PRODUCT, UPDATE_PRODUCT } from '../../queries';
@@ -23,48 +22,30 @@ const FILE_RELATIONS = {
 };
 
 const EditPage = props => {
-  // Get router URI information
-  let { id, contentType } = useParams();
-  console.log('id:', id);
-  console.log('contentType:', contentType);
+  // Set page information
+  const title = id === 'create' ? `Create a new ${contentType}` : `Edit ${id}`;
 
-  //const [description, setDescription] = useState('');
-  //const [name, setName] = useState('');
-  let description = '';
-  let name = '';
+  // Hooks
+  const { id, contentType } = useParams(); // Get router URI
+  // const [description, setDescription] = useState('');
+  // const [name, setName] = useState('');
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
   const [createProduct] = useMutation(CREATE_PRODUCT);
 
-  let title = id === 'create' ? `Create a new ${contentType}` : `Edit ${id}`;
-
-  if (id !== 'create') {
-    // if の中に hook を持ってくるのはまずいかも？
-    const { loading, error, data } = useQuery(GET_PRODUCT, {
-      variables: { id: id },
-    });
-    if (loading) return <p>loading...</p>;
-    if (error) return <p>GraphQL error</p>;
-    description = data.product.description;
-    //setName(data.product.name);
-    //setDescription(data.product.description);
-  }
-
-  const handleChange = e => {
-    setName(e.target.name);
-    setDescription(e.target.value);
-    console.log(name, description);
-  };
+  // Load existing data at initial mounting
+  const { loading, error, data } = useQuery(GET_PRODUCT, {
+    variables: { id: id },
+  });
+  if (loading) return <p>loading...</p>;
+  if (error) return <p>Failed to load product data.</p>;
+  const name = data.product.name;
+  const description = data.product.description;
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (id !== 'create') {
-      updateProduct({
-        variables: { id: id, name: name, description: description },
-      });
-    } else {
-      createProduct({ variables: { name: name, description: description } });
-      input.value = '';
-    }
+    updateProduct({
+      variables: { id: id, name: name, description: description },
+    });
     // TODO:
     // catch -> finally ->
     //         this.props.history.push(`/${params.contentType}s`);
@@ -75,21 +56,24 @@ const EditPage = props => {
       <div className="container-fluid">
         <h1>{title}</h1>
         <Link to={`/${contentType}s`}>Back</Link>
-        <div className="row" onChange={handleChange}>
+        <div className="row">
           <div className="col-md-4">
             <p>Name</p>
           </div>
           <div className="col-md-8">
-            <input type="text"></input>>
+            <input type="text" cols="50" defaultValue={name}></input>
           </div>
+        </div>
+        <div className="row">
           <div className="col-md-4">
             <p>Description</p>
           </div>
           <div className="col-md-8">
-            <textarea rows="10" cols="50"></textarea>
+            <textarea rows="10" cols="50" defaultValue={description}></textarea>
           </div>
-          <div className="col-md-4"></div>
-          <div className="col-md-8">
+        </div>
+        <div className="row">
+          <div className="col-md-12">
             <p>${description}</p>
           </div>
         </div>
