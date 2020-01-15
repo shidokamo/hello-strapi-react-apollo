@@ -3,6 +3,7 @@ import {
   HttpLink,
   ApolloLink,
   InMemoryCache,
+  concat,
 } from '@apollo/client';
 
 import auth from './utils/auth';
@@ -21,7 +22,6 @@ const middlewareAuthLink = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-const httpLinkWithAuthToken = middlewareAuthLink.concat(httpLink);
 // Disable cache so it reflects the updates
 // If you're just displaying data and not mutating them you can remove it
 // to increase performances
@@ -37,7 +37,7 @@ const defaultOptions = {
 };
 
 const client = new ApolloClient({
-  link: httpLinkWithAuthToken,
+  link: concat(middlewareAuthLink, httpLink),
   cache: new InMemoryCache(),
   defaultOptions: defaultOptions,
 });
