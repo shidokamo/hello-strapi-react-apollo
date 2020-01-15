@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -27,8 +27,8 @@ const EditPage = props => {
   // Set page information
   const title = id === 'create' ? `Create a new ${contentType}` : `Edit ${id}`;
 
-  // const [description, setDescription] = useState('');
-  // const [name, setName] = useState('');
+  const [newDescription, setDescription] = useState('');
+  const [newName, setName] = useState('');
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
 
   // Load existing data at initial mounting
@@ -41,12 +41,13 @@ const EditPage = props => {
   const description = data.product.description;
 
   const handleSubmit = e => {
+    console.log('New Description', newDescription);
     e.preventDefault();
     updateProduct({
       variables: {
         id: id,
-        name: name,
-        description: description,
+        name: newName,
+        description: newDescription,
       },
     });
     // TODO:
@@ -65,7 +66,11 @@ const EditPage = props => {
               <p>Name</p>
             </div>
             <div className="col-md-8">
-              <input type="text" cols="50" defaultValue={name}></input>
+              <input
+                type="text"
+                defaultValue={name}
+                onChange={e => setName(e.target.value)}
+              ></input>
             </div>
           </div>
           <div className="row">
@@ -77,7 +82,8 @@ const EditPage = props => {
                 rows="10"
                 cols="50"
                 defaultValue={description}
-              ></textarea>
+                onChange={e => setDescription(e.target.value)}
+              />
             </div>
           </div>
           <div className="row">
