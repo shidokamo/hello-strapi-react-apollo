@@ -29,12 +29,12 @@ const EditPage = props => {
   const title = `Edit ${id}`;
   const [newDescription, setDescription] = useState('');
   const [newName, setName] = useState('');
-  const [newMarkdown2html, setMarkdown2html] = useState('');
 
   // Mutation
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
 
   // Load existing data at initial mounting
+  // 処理の終わりに、newDescription と newName を更新するようにしたい。
   const { loading, error, data } = useQuery(GET_PRODUCT, {
     variables: { id: id },
   });
@@ -46,18 +46,19 @@ const EditPage = props => {
   // const [newDescription, setDescription] = useState(data.product.description);
   // const [newName, setName] = useState(data.product.name);
 
-  const handleChange = e => {
-    const markdown2html = unified()
-      .use(markdown) // パーサー(文字列をremarkの構文木に変換)
-      .use(slug) // トランスフォーマー(章にidをつける)
-      .use(remark2rehype) // トランスフォーマー(マークダウンからHTMLに変換)
-      .use(html) // コンパイラー(HTML構文木を文字列に変換)
-      .processSync(e.target.value);
-    setDescription(e.target.value);
-    setMarkdown2html(markdown2html);
-    console.log('New Description: ', newDescription);
-    console.log('Markdown-to-html: ', newMarkdown2html);
+  // handleChange の中に入れた方がパフォーマンスがいい？
+  const markdown2html = unified()
+    .use(markdown) // パーサー(文字列をremarkの構文木に変換)
+    .use(slug) // トランスフォーマー(章にidをつける)
+    .use(remark2rehype) // トランスフォーマー(マークダウンからHTMLに変換)
+    .use(html) // コンパイラー(HTML構文木を文字列に変換)
+    .processSync(newDescription);
 
+  const handleChange = e => {
+    setDescription(e.target.value);
+    // setMarkdown2html(markdown2html);
+    console.log('New Description: ', newDescription);
+    // console.log('Markdown-to-html: ', newMarkdown2html);
     // // Decode html
     // let el = document.createElement('div');
     // el.innerHTML = markdown2html;
@@ -119,7 +120,7 @@ const EditPage = props => {
               <p>Output</p>
             </div>
             <div className="col-md-8">
-              <div dangerouslySetInnerHTML={{ __html: newMarkdown2html }} />
+              <div dangerouslySetInnerHTML={{ __html: markdown2html }} />
             </div>
           </div>
           <div className="row">
