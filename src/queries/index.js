@@ -31,8 +31,9 @@ export const CREATE_PRODUCT = gql`
   }
 `;
 
+// ID の型を String にしてしまうのがあるあるの罠っぽいので注意
 export const UPDATE_PRODUCT = gql`
-  mutation($id: String!, $name: String!, $description: String!) {
+  mutation($id: ID!, $name: String!, $description: String!) {
     updateProduct(
       input: {
         where: { id: $id }
