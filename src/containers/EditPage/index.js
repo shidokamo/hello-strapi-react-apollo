@@ -22,15 +22,14 @@ const FILE_RELATIONS = {
 };
 
 const EditPage = props => {
+  // Hooks
+  const { id, contentType } = useParams(); // Get router URI
   // Set page information
   const title = id === 'create' ? `Create a new ${contentType}` : `Edit ${id}`;
 
-  // Hooks
-  const { id, contentType } = useParams(); // Get router URI
   // const [description, setDescription] = useState('');
   // const [name, setName] = useState('');
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
-  const [createProduct] = useMutation(CREATE_PRODUCT);
 
   // Load existing data at initial mounting
   const { loading, error, data } = useQuery(GET_PRODUCT, {
@@ -44,7 +43,11 @@ const EditPage = props => {
   const handleSubmit = e => {
     e.preventDefault();
     updateProduct({
-      variables: { id: id, name: name, description: description },
+      variables: {
+        id: id,
+        name: name,
+        description: description,
+      },
     });
     // TODO:
     // catch -> finally ->
@@ -56,37 +59,40 @@ const EditPage = props => {
       <div className="container-fluid">
         <h1>{title}</h1>
         <Link to={`/${contentType}s`}>Back</Link>
-        <div className="row">
-          <div className="col-md-4">
-            <p>Name</p>
+        <form onSubmit={handleSubmit}>
+          <div className="row">
+            <div className="col-md-4">
+              <p>Name</p>
+            </div>
+            <div className="col-md-8">
+              <input type="text" cols="50" defaultValue={name}></input>
+            </div>
           </div>
-          <div className="col-md-8">
-            <input type="text" cols="50" defaultValue={name}></input>
+          <div className="row">
+            <div className="col-md-4">
+              <p>Description</p>
+            </div>
+            <div className="col-md-8">
+              <textarea
+                rows="10"
+                cols="50"
+                defaultValue={description}
+              ></textarea>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-md-4">
-            <p>Description</p>
+          <div className="row">
+            <div className="col-md-12">
+              <p>${description}</p>
+            </div>
           </div>
-          <div className="col-md-8">
-            <textarea rows="10" cols="50" defaultValue={description}></textarea>
+          <div className="row">
+            <div className="col-md-12">
+              <Button type="submit" primary>
+                Submit
+              </Button>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            <p>${description}</p>
-          </div>
-        </div>
-        <div className="row">
-          <form onSubmit={handleSubmit}></form>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            <Button type="submit" primary>
-              Submit
-            </Button>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   );
