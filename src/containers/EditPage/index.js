@@ -13,6 +13,12 @@ import Button from '../../components/Button';
 
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_PRODUCT, UPDATE_PRODUCT } from '../../queries';
+// Markdown to HTML
+import unified from 'unified';
+import markdown from 'remark-parse';
+import slug from 'remark-slug';
+import remark2rehype from 'remark-rehype';
+import html from 'rehype-stringify';
 
 import './styles.scss';
 
@@ -38,6 +44,26 @@ const EditPage = props => {
   // これはなぜかうまくいかない。Hook の呼び出し順がおかしくなってエラーになる。
   // const [newDescription, setDescription] = useState(data.product.description);
   // const [newName, setName] = useState(data.product.name);
+  let markdown2html = '<h1>Please Edit</h1>';
+
+  const handleChange = e => {
+    console.log(markdown2html);
+    markdown2html = unified()
+      .use(markdown) // パーサー(文字列をremarkの構文木に変換)
+      .use(slug) // トランスフォーマー(章にidをつける)
+      .use(remark2rehype) // トランスフォーマー(マークダウンからHTMLに変換)
+      .use(html) // コンパイラー(HTML構文木を文字列に変換)
+      .processSync(e.target.value);
+    setDescription(e.target.value);
+    console.log('New Description: ', newDescription);
+    console.log(markdown2html);
+
+    // // Decode html
+    // let el = document.createElement('div');
+    // el.innerHTML = markdown2html;
+    // markdown2html =
+    //   el.childNodes.length === 0 ? '' : el.childNodes[0].nodeValue;
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -77,20 +103,23 @@ const EditPage = props => {
           </div>
           <div className="row">
             <div className="col-md-4">
-              <p>Description</p>
+              <p>Markdown</p>
             </div>
             <div className="col-md-8">
               <textarea
                 rows="10"
                 cols="50"
                 defaultValue={description}
-                onChange={e => setDescription(e.target.value)}
+                onChange={handleChange}
               />
             </div>
           </div>
           <div className="row">
-            <div className="col-md-12">
-              <p>{description}</p>
+            <div className="col-md-4">
+              <p>Output</p>
+            </div>
+            <div className="col-md-8">
+              <div dangerouslySetInnerHTML={{ __html: markdown2html }} />
             </div>
           </div>
           <div className="row">
