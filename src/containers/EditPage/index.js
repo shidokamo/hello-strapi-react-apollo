@@ -22,6 +22,15 @@ import html from 'rehype-stringify';
 
 import './styles.scss';
 
+const md2html = md => {
+  unified()
+    .use(markdown) // パーサー(文字列をremarkの構文木に変換)
+    .use(slug) // トランスフォーマー(章にidをつける)
+    .use(remark2rehype) // トランスフォーマー(マークダウンからHTMLに変換)
+    .use(html) // コンパイラー(HTML構文木を文字列に変換)
+    .processSync(md);
+};
+
 const EditPage = props => {
   // Hooks
   const { id } = useParams(); // Get router URI
@@ -29,41 +38,39 @@ const EditPage = props => {
   const title = `Edit ${id}`;
   const [newDescription, setDescription] = useState('');
   const [newName, setName] = useState('');
+  const [newMarkdown2html, setMarkdown2html] = useState('');
 
   // Mutation
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
 
   // Load existing data at initial mounting
-  // 処理の終わりに、newDescription と newName を更新するようにしたい。
   const { loading, error, data } = useQuery(GET_PRODUCT, {
     variables: { id: id },
+    onCompleted: data => {
+      console.log('onCompleted call.');
+      console.log('Data : ', data);
+      setName(data.product.name);
+      setDescription(data.product.description);
+      setMarkdown2html(md2html(data.product.description));
+    },
   });
   if (loading) return <p>loading...</p>;
   if (error) return <p>Failed to load product data.</p>;
-  const name = data.product.name;
-  const description = data.product.description;
-  // これはなぜかうまくいかない。Hook の呼び出し順がおかしくなってエラーになる。
+
+  // useQuery の後に置くとうまくいかない。Hook の呼び出し順がおかしくなってエラーになる。
   // const [newDescription, setDescription] = useState(data.product.description);
   // const [newName, setName] = useState(data.product.name);
 
-  // handleChange の中に入れた方がパフォーマンスがいい？
-  const markdown2html = unified()
-    .use(markdown) // パーサー(文字列をremarkの構文木に変換)
-    .use(slug) // トランスフォーマー(章にidをつける)
-    .use(remark2rehype) // トランスフォーマー(マークダウンからHTMLに変換)
-    .use(html) // コンパイラー(HTML構文木を文字列に変換)
-    .processSync(newDescription);
+  // newXXX を直接コンポーネントに渡すと render がうまくいかない。（state の更新は、render の後だから？）
+  const name = newName;
+  const description = newDescription;
+  const markdown2html = newMarkdown2html;
 
   const handleChange = e => {
     setDescription(e.target.value);
-    // setMarkdown2html(markdown2html);
+    setMarkdown2html(md2html(newDescription));
     console.log('New Description: ', newDescription);
-    // console.log('Markdown-to-html: ', newMarkdown2html);
-    // // Decode html
-    // let el = document.createElement('div');
-    // el.innerHTML = markdown2html;
-    // markdown2html =
-    //   el.childNodes.length === 0 ? '' : el.childNodes[0].nodeValue;
+    console.log('Markdown-to-html: ', newMarkdown2html);
   };
 
   const handleSubmit = e => {
@@ -120,7 +127,11 @@ const EditPage = props => {
               <p>Output</p>
             </div>
             <div className="col-md-8">
-              <div dangerouslySetInnerHTML={{ __html: markdown2html }} />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: markdown2html,
+                }}
+              />
             </div>
           </div>
           <div className="row">
