@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -23,7 +23,7 @@ import html from 'rehype-stringify';
 import './styles.scss';
 
 const md2html = md => {
-  unified()
+  return unified()
     .use(markdown) // パーサー(文字列をremarkの構文木に変換)
     .use(slug) // トランスフォーマー(章にidをつける)
     .use(remark2rehype) // トランスフォーマー(マークダウンからHTMLに変換)
@@ -39,6 +39,13 @@ const EditPage = props => {
   const [newDescription, setDescription] = useState('');
   const [newName, setName] = useState('');
   const [newMarkdown2html, setMarkdown2html] = useState('');
+
+  // useLayoutEffect を使うと呼び出しが大量になりすぎてエラーになる。
+  // useLayoutEffect(() => {
+  //   console.log('Update HTML from markdown.');
+  //   setMarkdown2html(md2html(newDescription));
+  //   console.log('Markdown-to-html: ', newMarkdown2html);
+  // });
 
   // Mutation
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
@@ -62,11 +69,12 @@ const EditPage = props => {
   // const [newName, setName] = useState(data.product.name);
 
   // newXXX を直接コンポーネントに渡すと render がうまくいかない。（state の更新は、render の後だから？）
+
   const name = newName;
   const description = newDescription;
-  const markdown2html = newMarkdown2html;
 
   const handleChange = e => {
+    console.log('handleChange call');
     setDescription(e.target.value);
     setMarkdown2html(md2html(newDescription));
     console.log('New Description: ', newDescription);
@@ -129,7 +137,7 @@ const EditPage = props => {
             <div className="col-md-8">
               <div
                 dangerouslySetInnerHTML={{
-                  __html: markdown2html,
+                  __html: newMarkdown2html,
                 }}
               />
             </div>
