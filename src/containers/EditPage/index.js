@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useLayoutEffect, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -36,9 +36,10 @@ const EditPage = props => {
   const { id } = useParams(); // Get router URI
   // Set page information
   const title = `Edit ${id}`;
-  const [newDescription, setDescription] = useState('');
-  const [newName, setName] = useState('');
-  const [newMarkdown2html, setMarkdown2html] = useState('');
+  const [description, setDescription] = useState('');
+  const [name, setName] = useState('');
+  const [markdown2html, setMarkdown2html] = useState('');
+  const refMarkdown = useRef(null);
 
   // useLayoutEffect を使うと呼び出しが大量になりすぎてエラーになる。
   // useLayoutEffect(() => {
@@ -54,11 +55,12 @@ const EditPage = props => {
   const { loading, error, data } = useQuery(GET_PRODUCT, {
     variables: { id: id },
     onCompleted: data => {
+      // data で帰り値がとれる。公式ドキュメントに記述ない。
       console.log('onCompleted call.');
       console.log('Data : ', data);
       setName(data.product.name);
       setDescription(data.product.description);
-      setMarkdown2html(md2html(data.product.description));
+      setMarkdown2html(md2html(data.product.description)); // description を渡すとうまくいかないので気をつける。
     },
   });
   if (loading) return <p>loading...</p>;
@@ -70,27 +72,28 @@ const EditPage = props => {
 
   // newXXX を直接コンポーネントに渡すと render がうまくいかない。（state の更新は、render の後だから？）
 
-  const name = newName;
-  const description = newDescription;
+  const init_name = name;
+  const init_description = description;
 
   const handleChange = e => {
     console.log('handleChange call');
     setDescription(e.target.value);
-    setMarkdown2html(md2html(newDescription));
-    console.log('New Description: ', newDescription);
-    console.log('Markdown-to-html: ', newMarkdown2html);
+    setMarkdown2html(md2html(e.target.value)); // setDescription と setMarkdown の両方でレンダーされる？
+    // setMarkdown2html(md2html(newDescription)); // これだと画面更新が一歩遅れる
+    console.log('New Description: ', description);
+    console.log('Markdown-to-html: ', markdown2html);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('New Name: ', newName);
-    console.log('New Description: ', newDescription);
-    if (newDescription || newName) {
+    console.log('New Name: ', name);
+    console.log('New Description: ', description);
+    if (description || name) {
       updateProduct({
         variables: {
           id: id,
-          name: newName,
-          description: newDescription,
+          name: name,
+          description: description,
         },
       });
     }
@@ -112,7 +115,7 @@ const EditPage = props => {
             <div className="col-md-8">
               <input
                 type="text"
-                defaultValue={name}
+                defaultValue={init_name}
                 onChange={e => setName(e.target.value)}
               ></input>
             </div>
@@ -125,7 +128,7 @@ const EditPage = props => {
               <textarea
                 rows="10"
                 cols="50"
-                defaultValue={description}
+                defaultValue={init_description}
                 onChange={handleChange}
               />
             </div>
@@ -136,8 +139,9 @@ const EditPage = props => {
             </div>
             <div className="col-md-8">
               <div
+                ref={refMarkdown}
                 dangerouslySetInnerHTML={{
-                  __html: newMarkdown2html,
+                  __html: markdown2html,
                 }}
               />
             </div>
